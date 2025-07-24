@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Welcome from "./pages/Welcome.vue";
 import Layout from "./layouts/Layout.vue";
-import Dashboard from "./pages/Dashboard.vue";
-import Workout from "./pages/Workout.vue";
 
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, provide } from "vue";
 import { workoutProgram } from "./utils/index";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const defaultData: Record<number, Record<string, string>> = {};
 for (let workoutIdx in workoutProgram) {
@@ -19,12 +19,10 @@ for (let workoutIdx in workoutProgram) {
   }
 }
 
-const selectedDisplay = ref(1);
 const data = ref(defaultData); // {1....30: {exercise_name: '', .....}}
-const selectedWorkout = ref(-1);
 
-const isWorkoutComplete = computed(() => {
-  const currWorkout = data.value?.[selectedWorkout.value];
+const isWorkoutComplete = computed(() => (selectedWorkout: number) => {
+  const currWorkout = data.value?.[selectedWorkout];
   if (!currWorkout) {
     return false;
   } // guard clause to exit function
@@ -50,13 +48,8 @@ const firstIncompleteWorkoutIndex = computed(() => {
   return -1; // all are complete
 });
 
-function handleChangeDisplay(idx: number) {
-  selectedDisplay.value = idx;
-}
-
 function handleSelectWorkout(idx: number) {
-  selectedDisplay.value = 3;
-  selectedWorkout.value = idx;
+  router.push({ name: 'Workout', params: { id: idx } });
 }
 
 function handleSaveWorkout() {
@@ -64,51 +57,36 @@ function handleSaveWorkout() {
   localStorage.setItem("workouts", JSON.stringify(data.value));
 
   // show the dashboard
-  selectedDisplay.value = 2;
-
-  // deselect a workout
-  selectedWorkout.value = -1;
+  router.push({ name: 'Dashboard' });
 }
 
 function handleResetPlan() {
-  selectedDisplay.value = 2;
-  selectedWorkout.value = -1;
   data.value = defaultData;
   localStorage.removeItem("workouts");
+  router.push({ name: 'Dashboard' });
 }
+
+provide('data', data);
+provide('firstIncompleteWorkoutIndex', firstIncompleteWorkoutIndex);
+provide('isWorkoutComplete', isWorkoutComplete);
+provide('handleSelectWorkout', handleSelectWorkout);
+provide('handleSaveWorkout', handleSaveWorkout);
+provide('handleResetPlan', handleResetPlan);
+
 
 onMounted(() => {
   const rawData = localStorage.getItem("workouts");
   if (rawData !== null) {
     const savedData = JSON.parse(rawData);
     data.value = savedData;
-    selectedDisplay.value = 2;
+    router.push({ name: 'Dashboard' });
   }
 });
 </script>
 
 <template>
   <Layout>
-    <!-- PAGE 1 -->
-    <Welcome
-      :handleChangeDisplay="handleChangeDisplay"
-      v-if="selectedDisplay == 1"
-    />
-    <!-- PAGE 2 -->
-    <Dashboard
-      :handleResetPlan="handleResetPlan"
-      :firstIncompleteWorkoutIndex="firstIncompleteWorkoutIndex"
-      :handleSelectWorkout="handleSelectWorkout"
-      v-if="selectedDisplay == 2"
-    />
-    <!-- PAGE 3 -->
-    <Workout
-      :handleSaveWorkout="handleSaveWorkout"
-      :isWorkoutComplete="isWorkoutComplete"
-      :data="data"
-      :selectedWorkout="selectedWorkout"
-      v-if="workoutProgram?.[selectedWorkout]"
-    />
+    <router-view />
   </Layout>
 </template>
 

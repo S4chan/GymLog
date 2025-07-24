@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const props = defineProps<{
-  handleChangeDisplay: (idx: number) => void;
-}>();
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function handleBegin() {
+  router.push({ name: 'Dashboard' });
+}
 </script>
 
 <template>
@@ -26,7 +30,7 @@ const props = defineProps<{
       <h3>🔥 Your Challenge</h3>
       <p>Complete all the workouts and track your progress along the way!</p>
       <p>Do you accept?</p>
-      <button @click="() => props.handleChangeDisplay(2)">Begin &rarr;</button>
+      <button @click="handleBegin">Begin &rarr;</button>
     </div>
   </section>
 </template>

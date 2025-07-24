@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, inject, type Ref, type ComputedRef } from "vue";
+import { useRoute } from 'vue-router';
 
 import Portal from "../components/Portal.vue";
 import { exerciseDescriptions, workoutProgram } from "../utils";
 
+const route = useRoute();
+const selectedWorkout = Number(route.params.id);
+
 const workoutType = ["Push", "Pull", "Legs"];
 
-const props = defineProps<{
-  data: Record<string, Record<string, string>>;
-  selectedWorkout: number;
-  handleSaveWorkout: () => void;
-  isWorkoutComplete: boolean;
-}>();
-
-const { data, selectedWorkout, handleSaveWorkout, isWorkoutComplete } = props;
+const data = inject<Ref<Record<number, Record<string, string>>>>('data', ref({}));
+const handleSaveWorkout = inject<() => void>('handleSaveWorkout', () => {});
+const isWorkoutComplete = inject<ComputedRef<(selectedWorkout: number) => boolean>>('isWorkoutComplete', computed(() => () => false));
 
 const workoutData = computed(() =>
   typeof selectedWorkout === "number"
@@ -122,7 +121,7 @@ function handleCloseModal() {
       <button @click="handleSaveWorkout">
         Save & Exit <i class="fa-solid fa-save"></i>
       </button>
-      <button :disabled="!isWorkoutComplete" @click="handleSaveWorkout">
+      <button :disabled="!isWorkoutComplete(selectedWorkout)" @click="handleSaveWorkout">
         Complete <i class="fa-solid fa-check"></i>
       </button>
     </div>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import { inject, computed, type ComputedRef } from 'vue';
 import Grid from "../components/Grid.vue";
 import { gymHealthFacts } from "../utils";
 
-const props = defineProps<{
-  handleSelectWorkout: (index: number) => void;
-  firstIncompleteWorkoutIndex: number;
-  handleResetPlan: () => void;
-}>();
+const handleSelectWorkout = inject<(index: number) => void>('handleSelectWorkout', () => {});
+const firstIncompleteWorkoutIndex = inject<ComputedRef<number>>('firstIncompleteWorkoutIndex', computed(() => -1));
+const handleResetPlan = inject<() => void>('handleResetPlan', () => {});
 
 // generate a random whole integer number between 0 and array length - 1
 const randomNumber = Math.floor(Math.random() * gymHealthFacts.length);
@@ -23,7 +22,7 @@ const todaysFact = gymHealthFacts[randomNumber];
       <button
         @click="
           () =>
-            props.handleSelectWorkout(
+            handleSelectWorkout(
               firstIncompleteWorkoutIndex < 0 ? 0 : firstIncompleteWorkoutIndex
             )
         "
@@ -31,7 +30,7 @@ const todaysFact = gymHealthFacts[randomNumber];
         Start workout &rarr;
       </button>
     </div>
-    <Grid v-bind="props" />
+    <Grid :handleSelectWorkout="handleSelectWorkout" :firstIncompleteWorkoutIndex="firstIncompleteWorkoutIndex" :handleResetPlan="handleResetPlan" />
   </section>
 </template>
 
