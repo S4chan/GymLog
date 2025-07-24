@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, inject, type Ref, type ComputedRef } from "vue";
+import { ref, computed } from "vue";
 import { useRoute } from 'vue-router';
+import { useWorkoutStore } from '../stores/workoutStore';
 
 import Portal from "../components/Portal.vue";
 import { exerciseDescriptions, workoutProgram } from "../utils";
 
 const route = useRoute();
+const workoutStore = useWorkoutStore();
+
 const selectedWorkout = Number(route.params.id);
 
 const workoutType = ["Push", "Pull", "Legs"];
-
-const data = inject<Ref<Record<number, Record<string, string>>>>('data', ref({}));
-const handleSaveWorkout = inject<() => void>('handleSaveWorkout', () => {});
-const isWorkoutComplete = inject<ComputedRef<(selectedWorkout: number) => boolean>>('isWorkoutComplete', computed(() => () => false));
 
 const workoutData = computed(() =>
   typeof selectedWorkout === "number"
@@ -110,7 +109,7 @@ function handleCloseModal() {
         <p>{{ w.sets }}</p>
         <p>{{ w.reps }}</p>
         <input
-          v-model="data[selectedWorkout][w.name]"
+          v-model="workoutStore.data[selectedWorkout][w.name]"
           class="grid-weights"
           placeholder="14kg"
           type="text"
@@ -118,10 +117,10 @@ function handleCloseModal() {
       </div>
     </div>
     <div class="card workout-btns">
-      <button @click="handleSaveWorkout">
+      <button @click="workoutStore.handleSaveWorkout">
         Save & Exit <i class="fa-solid fa-save"></i>
       </button>
-      <button :disabled="!isWorkoutComplete(selectedWorkout)" @click="handleSaveWorkout">
+      <button :disabled="!workoutStore.isWorkoutComplete(selectedWorkout)" @click="workoutStore.handleSaveWorkout">
         Complete <i class="fa-solid fa-check"></i>
       </button>
     </div>
