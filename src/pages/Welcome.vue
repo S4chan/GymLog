@@ -1,23 +1,22 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/userStore";
 
 const router = useRouter();
+const userStore = useUserStore();
+const name = ref("");
 
 function handleBegin() {
-  router.push({ name: 'Dashboard' });
+  if (name.value.trim() !== "") {
+    userStore.setName(name.value);
+    router.push({ name: "Dashboard" });
+  }
 }
 </script>
 
 <template>
   <section id="welcome">
-    <div class="benefits">
-      <h2>Complete this program<br />if you want...</h2>
-      <div>
-        <p>✅ Follow a simple program with proven results.</p>
-        <p>✅ Get fit, healthy, strong and absolutely shredded.</p>
-        <p>✅ Learn more about gym, training and technique</p>
-      </div>
-    </div>
     <div>
       <h3>The Training Plan</h3>
       <p>
@@ -28,8 +27,9 @@ function handleBegin() {
     </div>
     <div class="card challenge">
       <h3>🔥 Your Challenge</h3>
+      <p>Enter your name to begin:</p>
+      <input type="text" v-model="name" placeholder="Your Name" />
       <p>Complete all the workouts and track your progress along the way!</p>
-      <p>Do you accept?</p>
       <button @click="handleBegin">Begin &rarr;</button>
     </div>
   </section>
