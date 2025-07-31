@@ -1,8 +1,23 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useUserStore } from '../stores/userStore';
+import { useRouter } from 'vue-router';
+
+const userStore = useUserStore();
+const router = useRouter();
+
+function handleLogout() {
+  userStore.logout();
+  router.push({ name: 'Welcome' });
+}
+</script>
 
 <template>
   <header>
     <h1 class="text-gradient">SMOLGRAM</h1>
+    <div v-if="userStore.name" class="user-info">
+      <span>Welcome, {{ userStore.name }}</span>
+      <button @click="handleLogout">Logout</button>
+    </div>
   </header>
   <main>
     <slot></slot>
@@ -21,13 +36,23 @@
 </template>
 
 <style scoped>
-header,
-main,
-footer {
+header, main, footer {
   padding: 1rem;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 main {

@@ -66,7 +66,6 @@ export const useWorkoutStore = defineStore('workout', () => {
     } else {
       resetState();
     }
-    router.push({ name: 'Dashboard' });
   }
 
   return {

@@ -12,6 +12,11 @@ const router = useRouter();
 onMounted(() => {
   workoutStore.initialize_data();
   userStore.initialize();
+  if (userStore.name) {
+    router.push({ name: 'Dashboard' });
+  } else {
+    router.push({ name: 'Welcome' });
+  }
 });
 
 function handleLogout() {
@@ -22,20 +27,9 @@ function handleLogout() {
 
 <template>
   <Layout>
-    <div v-if="userStore.name" class="user-info">
-      <span>Welcome, {{ userStore.name }}</span>
-      <button @click="handleLogout">Logout</button>
-    </div>
     <router-view />
   </Layout>
 </template>
 
 <style scoped>
-.user-info {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-}
 </style>
