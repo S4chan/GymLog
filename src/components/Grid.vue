@@ -1,13 +1,30 @@
 <script setup lang="ts">
 import { workoutProgram } from "../utils";
+import { useWorkoutStore } from '../stores/workoutStore';
 
-workoutProgram;
+const workoutStore = useWorkoutStore();
 
 const props = defineProps<{
   handleSelectWorkout: (index: number) => void;
-  firstIncompleteWorkoutIndex: number;
   handleResetPlan: () => void;
 }>();
+
+const getWorkoutClass = (workoutIdx: number) => {
+  const stats = workoutStore.getWorkoutCompletionStats(workoutIdx);
+  if (stats.total === 0) return '';
+  
+  const completionRatio = stats.completed / stats.total;
+  
+  if (completionRatio === 1) {
+    return 'green-bg';
+  } else if (completionRatio > 0.5) {
+    return 'orange-bg';
+  } else if (completionRatio > 0) {
+    return 'red-bg';
+  }
+  
+  return '';
+};
 
 const workoutTypes = ["Push", "Pull", "Legs"];
 </script>
@@ -15,11 +32,11 @@ const workoutTypes = ["Push", "Pull", "Legs"];
 <template>
   <section id="grid">
     <button
-      :disabled="workoutIdx > 0 && workoutIdx > firstIncompleteWorkoutIndex"
       @click="() => props.handleSelectWorkout(workoutIdx)"
       :key="workoutIdx"
       v-for="(_, workoutIdx) in Object.keys(workoutProgram)"
       class="card-button plan-card"
+      :class="getWorkoutClass(workoutIdx)"
     >
       <div>
         <p>
@@ -32,7 +49,6 @@ const workoutTypes = ["Push", "Pull", "Legs"];
       <h3>{{ workoutTypes[workoutIdx % 3] }}</h3>
     </button>
     <button
-      :disabled="firstIncompleteWorkoutIndex != -1"
       @click="props.handleResetPlan"
       class="card-button plan-card-reset"
     >
@@ -43,6 +59,34 @@ const workoutTypes = ["Push", "Pull", "Legs"];
 </template>
 
 <style scoped>
+.plan-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10%;
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+
+.plan-card.red-bg::after {
+  background-color: #ef4444;
+}
+
+.plan-card.orange-bg::after {
+  background-color: #f97316;
+}
+
+.plan-card.green-bg::after {
+  background-color: #22c55e;
+}
+
 #grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

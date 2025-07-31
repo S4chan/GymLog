@@ -70,7 +70,7 @@ function handleCloseModal() {
       <h4 class="grid-name">Warmup</h4>
       <h6>Sets</h6>
       <h6>Reps</h6>
-      <h6 class="grid-weights">Weights</h6>
+      <h6 class="grid-weights"></h6>
       <div class="workout-grid-row" v-for="(w, wIdx) in warmup" :key="wIdx">
         <div class="grid-name">
           <p>{{ w.name }}</p>
@@ -86,13 +86,13 @@ function handleCloseModal() {
         </div>
         <p>{{ w.sets }}</p>
         <p>{{ w.reps }}</p>
-        <input class="grid-weights" placeholder="14kg" type="text" disabled />
+        <div class="grid-weights"></div>
       </div>
       <div class="workout-grid-line"></div>
       <h4 class="grid-name">Workout</h4>
       <h6>Sets</h6>
       <h6>Reps</h6>
-      <h6 class="grid-weights">Weights</h6>
+      <h6 class="grid-weights">Complete</h6>
       <div class="workout-grid-row" v-for="(w, wIdx) in workout" :key="wIdx">
         <div class="grid-name">
           <p>{{ w.name }}</p>
@@ -111,17 +111,13 @@ function handleCloseModal() {
         <input
           v-model="workoutStore.data[selectedWorkout][w.name]"
           class="grid-weights"
-          placeholder="14kg"
-          type="text"
+          type="checkbox"
         />
       </div>
     </div>
     <div class="card workout-btns">
       <button @click="workoutStore.handleSaveWorkout">
         Save & Exit <i class="fa-solid fa-save"></i>
-      </button>
-      <button :disabled="!workoutStore.isWorkoutComplete(selectedWorkout)" @click="workoutStore.handleSaveWorkout">
-        Complete <i class="fa-solid fa-check"></i>
       </button>
     </div>
   </section>

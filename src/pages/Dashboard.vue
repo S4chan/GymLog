@@ -28,7 +28,7 @@ const todaysFact = gymHealthFacts[randomNumber];
         Start workout &rarr;
       </button>
     </div>
-    <Grid :handleSelectWorkout="workoutStore.handleSelectWorkout" :firstIncompleteWorkoutIndex="workoutStore.firstIncompleteWorkoutIndex" :handleResetPlan="workoutStore.handleResetPlan" />
+    <Grid :handleSelectWorkout="workoutStore.handleSelectWorkout" :handleResetPlan="workoutStore.handleResetPlan" />
   </section>
 </template>
 
