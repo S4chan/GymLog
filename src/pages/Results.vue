@@ -13,9 +13,11 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWorkoutStore } from '../stores/workoutStore';
+import { useUserStore } from '../stores/userStore';
 
 const router = useRouter();
 const workoutStore = useWorkoutStore();
+const userStore = useUserStore();
 
 const completionPercentage = computed(() => workoutStore.completionPercentage);
 
@@ -30,7 +32,7 @@ const percentageColor = computed(() => {
 });
 
 const challengeAgain = () => {
-  workoutStore.reset();
+  userStore.logout();
   router.push({ name: 'Welcome' });
 };
 </script>

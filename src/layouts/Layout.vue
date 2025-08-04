@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useUserStore } from '../stores/userStore';
-import { useRouter } from 'vue-router';
+import { useUserStore } from "../stores/userStore";
+import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
 const router = useRouter();
 
 function handleLogout() {
   userStore.logout();
-  router.push({ name: 'Welcome' });
+  router.push({ name: "Welcome" });
 }
 </script>
 
@@ -25,10 +25,6 @@ function handleLogout() {
   <footer>
     <small>Created by</small>
     <a href="https://github.com/S4chan" target="_blank">
-      <img
-        src="https://media.cakeresume.com/image/upload/s--IIQQmeu8--/c_fill,g_face,h_300,w_300/v1742528072/yvwx6fllxpmtyb4uek0n.jpg"
-        alt="pfp"
-      />
       <p>S4chan</p>
       <i class="fa-brands fa-github"></i>
     </a>
@@ -36,7 +32,9 @@ function handleLogout() {
 </template>
 
 <style scoped>
-header, main, footer {
+header,
+main,
+footer {
   padding: 1rem;
   width: 100%;
   max-width: 600px;
@@ -83,11 +81,5 @@ footer a {
 
 footer a:hover {
   border-color: var(--color-link);
-}
-
-footer a img {
-  max-height: 30px;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
 }
 </style>

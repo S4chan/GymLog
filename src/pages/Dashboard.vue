@@ -2,7 +2,6 @@
 import Grid from "../components/Grid.vue";
 import { gymHealthFacts } from "../utils";
 import { useWorkoutStore } from "../stores/workoutStore";
-import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 const workoutStore = useWorkoutStore();
