@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { workoutProgram } from "../utils";
 import { useRouter } from "vue-router";
 
-export const useWorkoutStore = defineStore('workout', () => {
+export const useWorkoutStore = defineStore("workout", () => {
   const getInitialData = () => {
     const data: Record<number, Record<string, boolean>> = {};
     for (const workoutIdx in workoutProgram) {
@@ -36,9 +36,8 @@ export const useWorkoutStore = defineStore('workout', () => {
   });
 
   const isTrainingStarted = computed(() => {
-    // Checks if any exercise in any workout has been checked.
-    return Object.values(data.value).some(workout => 
-      Object.values(workout).some(exerciseIsChecked => exerciseIsChecked)
+    return Object.values(data.value).some((workout) =>
+      Object.values(workout).some((exerciseIsChecked) => exerciseIsChecked)
     );
   });
 
@@ -76,7 +75,7 @@ export const useWorkoutStore = defineStore('workout', () => {
         return parseInt(index);
       }
     }
-    return Object.keys(allWorkouts).length - 1; // all are started
+    return Object.keys(allWorkouts).length - 1;
   });
 
   function handleSelectWorkout(idx: number) {

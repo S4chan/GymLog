@@ -13,7 +13,7 @@ function handleLogout() {
 
 <template>
   <header>
-    <h1 class="text-gradient">SMOLGRAM</h1>
+    <h1 class="text-gradient">GYMLOG</h1>
     <div v-if="userStore.name" class="user-info">
       <span>Welcome, {{ userStore.name }}</span>
       <button @click="handleLogout">Logout</button>

@@ -7,7 +7,6 @@ import { useRouter } from "vue-router";
 const workoutStore = useWorkoutStore();
 const router = useRouter();
 
-// generate a random whole integer number between 0 and array length - 1
 const randomNumber = Math.floor(Math.random() * gymHealthFacts.length);
 const todaysFact = gymHealthFacts[randomNumber];
 
@@ -47,8 +46,6 @@ const goToResults = () => {
     >
       See Results
     </button>
-
-    <!-- Temporary Debug Panel -->
   </section>
 </template>
 
