@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import Grid from "../components/Grid.vue";
 import { gymHealthFacts } from "../utils";
-import { useWorkoutStore } from '../stores/workoutStore';
+import { useWorkoutStore } from "../stores/workoutStore";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 const workoutStore = useWorkoutStore();
+const router = useRouter();
 
 // generate a random whole integer number between 0 and array length - 1
 const randomNumber = Math.floor(Math.random() * gymHealthFacts.length);
 const todaysFact = gymHealthFacts[randomNumber];
+
+const goToResults = () => {
+  router.push({ name: "Results" });
+};
 </script>
 
 <template>
@@ -21,14 +28,28 @@ const todaysFact = gymHealthFacts[randomNumber];
         @click="
           () =>
             workoutStore.handleSelectWorkout(
-              workoutStore.firstIncompleteWorkoutIndex < 0 ? 0 : workoutStore.firstIncompleteWorkoutIndex
+              workoutStore.firstIncompleteWorkoutIndex < 0
+                ? 0
+                : workoutStore.firstIncompleteWorkoutIndex
             )
         "
       >
         Start workout &rarr;
       </button>
     </div>
-    <Grid :handleSelectWorkout="workoutStore.handleSelectWorkout" :handleResetPlan="workoutStore.handleResetPlan" />
+    <Grid
+      :handleSelectWorkout="workoutStore.handleSelectWorkout"
+      :handleResetPlan="workoutStore.handleResetPlan"
+    />
+    <button
+      v-if="workoutStore.isTrainingStarted"
+      @click="goToResults"
+      style="width: 100%"
+    >
+      See Results
+    </button>
+
+    <!-- Temporary Debug Panel -->
   </section>
 </template>
 

@@ -32,21 +32,21 @@ const workoutTypes = ["Push", "Pull", "Legs"];
 <template>
   <section id="grid">
     <button
-      @click="() => props.handleSelectWorkout(workoutIdx)"
-      :key="workoutIdx"
-      v-for="(_, workoutIdx) in Object.keys(workoutProgram)"
+      @click="() => props.handleSelectWorkout(n - 1)"
+      :key="n - 1"
+      v-for="n in Object.keys(workoutProgram).length"
       class="card-button plan-card"
-      :class="getWorkoutClass(workoutIdx)"
+      :class="getWorkoutClass(n - 1)"
     >
       <div>
         <p>
-          Day {{ workoutIdx < 9 ? "0" + (workoutIdx + 1) : workoutIdx + 1 }}
+          Day {{ n < 10 ? "0" + n : n }}
         </p>
-        <i class="fa-solid fa-dumbbell" v-if="workoutIdx % 3 == 0"></i>
-        <i class="fa-solid fa-weight-hanging" v-if="workoutIdx % 3 == 1"></i>
-        <i class="fa-solid fa-bolt" v-if="workoutIdx % 3 == 2"></i>
+        <i class="fa-solid fa-dumbbell" v-if="(n - 1) % 3 == 0"></i>
+        <i class="fa-solid fa-weight-hanging" v-if="(n - 1) % 3 == 1"></i>
+        <i class="fa-solid fa-bolt" v-if="(n - 1) % 3 == 2"></i>
       </div>
-      <h3>{{ workoutTypes[workoutIdx % 3] }}</h3>
+      <h3>{{ workoutTypes[(n - 1) % 3] }}</h3>
     </button>
     <button
       @click="props.handleResetPlan"
