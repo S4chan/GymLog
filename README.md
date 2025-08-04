@@ -1,3 +1,7 @@
+# [Demo](https://s4chan.github.io/)
+
+![預覽圖片](https://i.postimg.cc/x1MqbdFd/image.png)
+
 # Fitness Tracker
 
 A modern web application built with Vue.js, Vite, and TypeScript to help users track their workouts and fitness progress.
@@ -25,7 +29,7 @@ A modern web application built with Vue.js, Vite, and TypeScript to help users t
 1.  **Clone the repository:**
 
     ```bash
-    git clone
+    git clone https://github.com/S4chan/GymLog.git
     ```
 
 2.  **Navigate to the project directory:**
@@ -76,7 +80,7 @@ A modern web application built with Vue.js, Vite, and TypeScript to help users t
 1.  **克隆儲存庫:**
 
     ```bash
-    git clone
+    git clone https://github.com/S4chan/GymLog.git
     ```
 
 2.  **進入專案目錄:**
